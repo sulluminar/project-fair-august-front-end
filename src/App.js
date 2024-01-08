@@ -7,12 +7,14 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Project from './pages/Project';
 import Register from './pages/Register';
+import Home from './pages/Home';
 
 function App() {
   return (
     <div>
       <Header />
       <h3>Project Fair</h3>
+      <Home/>
       <Routes>
         <Route path='/' element={<Dashboard />}/>
         <Route path='/login' element={ <Login />}/>
