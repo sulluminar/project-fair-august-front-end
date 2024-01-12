@@ -8,20 +8,17 @@ import Login from './pages/Login';
 import Project from './pages/Project';
 import Register from './pages/Register';
 import Home from './pages/Home';
+import Auth from './pages/Auth';
 
 function App() {
   return (
     <div>
-      <Header />
-      <h3>Project Fair</h3>
-      <Home/>
       <Routes>
-        <Route path='/' element={<Dashboard />}/>
-        <Route path='/login' element={ <Login />}/>
-        <Route path='/register' element={<Register />}/>
-        <Route path='/project' element={ <Project />}/>
-       
-       
+        <Route path='/' element={<Home />}/>
+        <Route path='/login' element={ <Auth />}/>
+        <Route path='/register' element={<Auth register={"register"} />}/>
+        <Route path='/project' element={ <Project />}/> 
+        <Route path='/dashboard' element={ <Dashboard/>}/> 
         
       </Routes>
 
