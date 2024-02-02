@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import authImage from '../assets/image2.png'
 import { Form } from 'react-bootstrap';
@@ -8,6 +8,7 @@ import { loginAPI, registerAPI } from '../services/allAPI';
 // both Login page and register page are almost same.
 // So here we use a single page and change the content inside that page
 function Auth({ register }) {
+  const navigate = useNavigate();
   const registerForm = register ? true : false;
   const [userData, setUserData] = useState({
     username: "",
@@ -47,9 +48,9 @@ function Auth({ register }) {
     else{
       const loginResult = await loginAPI(userData)
       if(loginResult.status == 200){
-        alert("logged in successfully");
-        console.log("===login result===");
-        console.log(loginResult.data)
+        sessionStorage.setItem("existingUser",JSON.stringify(loginResult.data.existingUser))
+        sessionStorage.setItem("token",loginResult.data.token)
+        navigate('/')
       }
       else{
         alert(loginResult.response.data)
