@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import Projectcards from '../components/Projectcards'
 import { Link } from 'react-router-dom'
-import homepageImage from '../assets/image1.png'
+import homepageImage from '../assets/image2.png'
 
 function Home() {
     return (
