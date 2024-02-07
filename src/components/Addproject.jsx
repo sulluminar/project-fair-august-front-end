@@ -58,7 +58,8 @@ function Addproject() {
       reqBody.append("overview", overview)
       reqBody.append("projectImage", projectImage)
       const reqHeader ={
-        "Content-Type":"multipart/form-data"
+        "Content-Type":"multipart/form-data",
+        "Authorization":`Bearer ${token}`
       }
       const result = await addProjectAPI(reqBody, reqHeader)
     }
