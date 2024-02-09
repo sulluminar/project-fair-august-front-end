@@ -40,7 +40,7 @@ function Addproject() {
     if(sessionStorage.token){
       setToken(sessionStorage.getItem("token"))
     }
-  })
+  },[])
   const handleAdd = async (e) => {
     e.preventDefault();
     const { title, language, github, website, overview, projectImage } = projectDetails;
@@ -61,7 +61,16 @@ function Addproject() {
         "Content-Type":"multipart/form-data",
         "Authorization":`Bearer ${token}`
       }
-      const result = await addProjectAPI(reqBody, reqHeader)
+      const result = await addProjectAPI(reqBody, reqHeader);
+      console.log("result")
+      if(result.status == 200){
+        alert("Project added successfully")
+        handleCloseClear()
+        handleClose()
+      }
+      else{
+        alert(result.respose.data)
+      }
     }
   }
   return (
