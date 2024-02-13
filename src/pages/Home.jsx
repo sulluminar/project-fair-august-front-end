@@ -3,16 +3,24 @@ import { Col, Row } from 'react-bootstrap'
 import Projectcards from '../components/Projectcards'
 import { Link } from 'react-router-dom'
 import homepageImage from '../assets/image2.png'
+import { homeProjectAPI } from '../services/allAPI'
 
 function Home() {
     // we need to change Get Started button to Manage projects, id user logged in
+    const [homeProject, setHomeProject] = useState([])
     const [isLogin, setIsLogin] = useState(false)
-    useEffect(()=>{
-        if(sessionStorage.getItem("token")){
+    useEffect(() => {
+        if (sessionStorage.getItem("token")) {
             setIsLogin(true)
         }
-    },[])
-  
+    }, [])
+    const getHomeProject = async () => {
+        const result = await homeProjectAPI()
+        setHomeProject(result.data)
+    }
+    useEffect(() => {
+        getHomeProject();
+    }, [])
     return (
         <>
             <div className='mb-5 bg-success' style={{ width: "100%", height: "80vh" }}>
@@ -46,15 +54,16 @@ function Home() {
                     <h1>Explore Our Project</h1>
                     <marquee scrollAmount={20}>
                         <div className='d-flex'>
-                            <div className='ms-5' style={{ width: "400px" }} >
-                                <Projectcards />
-                            </div>
-                            <div className='ms-5' style={{ width: "400px" }} >
-                                <Projectcards />
-                            </div>
-                            <div className='ms-5' style={{ width: "400px" }}>
-                                <Projectcards />
-                            </div>
+                            {
+                                homeProject?.length > 0 ?
+                                    homeProject.map((item) => (
+                                        <div className='ms-5' style={{ width: "400px"}} >
+                                        <Projectcards project={item}/>
+                                        </div>
+                                    )):
+                                    <p>No projects Found</p>
+                            }
+                            
                         </div>
                     </marquee>
 
