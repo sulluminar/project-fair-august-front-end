@@ -1,7 +1,39 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Addproject from './Addproject'
+import { deleteProjectAPI, userProjectAPI } from '../services/allAPI'
+import { addProjectResponseContext } from '../context/ContextShare'
+import EditProject from './EditProject'
 
 function Myproject() {
+  const {addProjectResponse,setAddProjectResponse} = useContext(addProjectResponseContext)
+  const [userProject, setUserProject] = useState([])
+  const getUserProject = async () => {
+    const token = sessionStorage.getItem("token")
+    const reqHeader = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+    const result = await userProjectAPI(reqHeader);
+    console.log("all user project===");
+    console.log(result.data)
+    setUserProject(result.data)
+  }
+  useEffect(() => {
+    getUserProject();
+  }, [addProjectResponse])
+  const handleDelete = async(id)=>{
+    const token = sessionStorage.getItem("token")
+    const reqHeader= {
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${token}`
+    }
+    const result = await deleteProjectAPI(id,reqHeader);
+    if(result.status===200){
+      alert("Project Deleted Successfully");
+      getUserProject();
+    }
+
+  }
   return (
     <>
       <div className='card shadow p-5 ms-3 mb-5'>
@@ -12,15 +44,22 @@ function Myproject() {
           </div>
         </div>
         <div className='mt-5'>
-          <div className='border d-flex align-items-center rounded p-2'>
-            <h5>Project title</h5>
-            <div className='ms-auto'>
-              <button className='btn'><i class="fa-solid fa-pen-to-square text-info"></i></button>
-              <button className='btn'><i class="fa-brands fa-github text-success"></i></button>
-              <button className='btn'><i class="fa-solid fa-trash text-danger"></i></button>
-            </div>
-          </div>
-          <p className='text-danger fw-bolder fs-5 mt-3'>No Project Uploaded Yet !!</p>
+          {
+            userProject?.length > 0 ?
+              userProject.map((item) => (
+                <div className='border d-flex align-items-center rounded p-2 mb-2'>
+                  <h5>{item.title}</h5>
+                  <div className='ms-auto'>
+                    <EditProject project={item}/>
+                    <a className='btn' href={item.github} target='_blank'><i class="fa-brands fa-github text-success"></i></a>
+                    <button className='btn'><i class="fa-solid fa-trash text-danger" onClick={(e)=>handleDelete(item._id)}></i></button>
+                  </div>
+                </div>
+              )) :
+              <p className='text-danger fw-bolder fs-5 mt-3'>No Project Uploaded Yet !!</p>
+          }
+
+
         </div>
       </div>
     </>

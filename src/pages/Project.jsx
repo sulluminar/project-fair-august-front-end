@@ -5,6 +5,7 @@ import Projectcards from '../components/Projectcards'
 import { allProjectAPI } from '../services/allAPI'
 
 function Project() {
+  const [searchkey, setSerachKey] = useState((""))
   const [allProjects, setAllProjects] = useState([])
   const getAllProject = async () => {
     if (sessionStorage.getItem("token")) {
@@ -13,7 +14,7 @@ function Project() {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       }
-      const result = await allProjectAPI(reqHeader);
+      const result = await allProjectAPI(searchkey,reqHeader);
       console.log(result.data)
       setAllProjects(result.data)
     }
@@ -22,14 +23,17 @@ function Project() {
   }
   useEffect(() => {
     getAllProject()
-  },[])
+  },[searchkey])
+  console.log("===search key===",searchkey)
   return (
     <>
       <Header />
       <div className='d-flex justify-content-center align-items-center mt-5 flex-column'>
         <h3>All Projects</h3>
         <div className={'d-flex mt-5 w-25'}>
-          <input type="text" className='form-control' placeholder="Search project using technology" />
+          <input 
+          onChange={(e)=>setSerachKey(e.target.value)}
+          type="text" className='form-control' placeholder="Search project using technology" />
           <i class="fa-solid fa-magnifying-glass fa-rotate-90" style={{ marginLeft: "-40px", color: "lightblue" }}></i>
         </div>
       </div>

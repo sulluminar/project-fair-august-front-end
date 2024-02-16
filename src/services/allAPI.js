@@ -22,11 +22,23 @@ export const homeProjectAPI = async () => {
 }
 
 // 5) get all projects
-export const allProjectAPI = async (reqHeader) => {
-    return await commonAPI("GET", `${BASE_URL}/project/all-project`, "", reqHeader)
+// here we are sending search key as query parameter
+// syntax path?key=value
+export const allProjectAPI = async (searchkey,reqHeader) => {
+    return await commonAPI("GET", `${BASE_URL}/project/all-project?search=${searchkey}`, "", reqHeader)
 }
 
 // 6) get user project
 export const userProjectAPI = async (reqHeader) => {
     return await commonAPI("GET", `${BASE_URL}/project/user-project`, "", reqHeader)
+}
+
+// 7) edit project
+export const editUserProjectAPI = async (projectId, reqBody, reqHeader)=>{
+    return await commonAPI('PUT', `${BASE_URL}/project/edit/${projectId}`, reqBody, reqHeader)
+}
+
+// delete project
+export const deleteProjectAPI = async (projectId, reqHeader)=>{
+    return await commonAPI("DELETE", `${BASE_URL}/project/remove/${projectId}`,{},reqHeader)
 }
