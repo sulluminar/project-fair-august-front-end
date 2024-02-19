@@ -4,7 +4,7 @@ import { Col, Row } from 'react-bootstrap'
 import Myproject from '../components/Myproject'
 import Profile from '../components/Profile'
 
-function Dashboard() {
+function Dashboard({dashboard}) {
   const [username, setUsername] = useState("");
   useEffect(() => {
     const existingUserData = JSON.parse(sessionStorage.getItem("existingUser"));
@@ -14,7 +14,7 @@ function Dashboard() {
 
   return (
     <>
-      <Header />
+      <Header logout={'logout'}/>
       <h2 className='mt-5 ms-3 '>Welcome <span style={{ color: "orange" }}>{username}</span></h2>
       <Row className='container-fluid mt-5'>
         <Col md={8}>

@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { BASE_URL } from '../services/baseurl';
 import { editUserProjectAPI } from '../services/allAPI';
+import { editProjectResponseContext } from '../context/ContextShare';
 
 function EditProject({ project }) {
+    const {editProjectResponse, setEditProjectResponse}  = useContext(editProjectResponseContext)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -61,6 +63,7 @@ function EditProject({ project }) {
                 }
                 const result = await editUserProjectAPI(id, reqBody, reqHeader);
                 if (result.status === 200) {
+                    setEditProjectResponse(result)
                     alert("Updated Successfully")
                     handleClose()
                 }
@@ -75,6 +78,7 @@ function EditProject({ project }) {
                 }
                 const result = await editUserProjectAPI(id, reqBody, reqHeader)
                 if (result.status === 200) {
+                    setEditProjectResponse(result)
                     alert("Updated Successfully")
                     handleClose()
                 }

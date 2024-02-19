@@ -1,13 +1,15 @@
-import React, { useReducer, useState } from 'react'
+import React, { useContext, useReducer, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import authImage from '../assets/image2.png'
 import { Form } from 'react-bootstrap';
 import { loginAPI, registerAPI } from '../services/allAPI';
+import { isAuthTokenContext } from '../context/ContextShare';
 
 // both Login page and register page are almost same.
 // So here we use a single page and change the content inside that page
 function Auth({ register }) {
+  const {isAuthToken, setIsAuthToken} = useContext(isAuthTokenContext)
   const navigate = useNavigate();
   const registerForm = register ? true : false;
   const [userData, setUserData] = useState({
@@ -50,6 +52,7 @@ function Auth({ register }) {
       if(loginResult.status == 200){
         sessionStorage.setItem("existingUser",JSON.stringify(loginResult.data.existingUser))
         sessionStorage.setItem("token",loginResult.data.token)
+        setIsAuthToken(true)
         navigate('/')
       }
       else{

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Addproject from './Addproject'
 import { deleteProjectAPI, userProjectAPI } from '../services/allAPI'
-import { addProjectResponseContext } from '../context/ContextShare'
+import { addProjectResponseContext, editProjectResponseContext } from '../context/ContextShare'
 import EditProject from './EditProject'
 
 function Myproject() {
   const {addProjectResponse,setAddProjectResponse} = useContext(addProjectResponseContext)
+  const {editProjectResponse, setEditProjectResponse} = useContext(editProjectResponseContext)
   const [userProject, setUserProject] = useState([])
   const getUserProject = async () => {
     const token = sessionStorage.getItem("token")
@@ -20,7 +21,7 @@ function Myproject() {
   }
   useEffect(() => {
     getUserProject();
-  }, [addProjectResponse])
+  }, [addProjectResponse,editProjectResponse])
   const handleDelete = async(id)=>{
     const token = sessionStorage.getItem("token")
     const reqHeader= {
